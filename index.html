@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生日快乐 🎂</title>
+    <title>🎂 生日快乐 🎉</title>
     <style>
-        /* 全局样式 */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        /* 背景渐变 */
         body {
             margin: 0;
             padding: 0;
@@ -16,52 +18,129 @@
             background: linear-gradient(135deg, #f8e0e6, #e3cadb);
             font-family: 'Poppins', sans-serif;
             color: #5c3d50;
+            overflow: hidden;
         }
 
-        /* 玻璃拟态效果 */
+        /* 玻璃卡片 */
         .container {
             background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 40px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-in-out;
         }
 
+        /* 文字 & 动画 */
         h1 {
             font-size: 2.5em;
             margin: 0;
+            animation: fadeIn 2s ease-in-out;
         }
 
         p {
             font-size: 1.2em;
             margin: 15px 0;
+            opacity: 0;
+            animation: fadeInUp 2s ease-in-out forwards;
         }
 
+        /* 按钮 */
         .btn {
             background: linear-gradient(135deg, #e99bb6, #d285a6);
             color: white;
             padding: 12px 24px;
-            font-size: 1em;
+            font-size: 1.2em;
             border: none;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 15px;
         }
 
         .btn:hover {
             background: linear-gradient(135deg, #d285a6, #e99bb6);
             transform: scale(1.05);
         }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 气球动画 */
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background-color: rgba(255, 100, 150, 0.8);
+            border-radius: 50%;
+            animation: floatUp 5s infinite ease-in-out;
+        }
+
+        .balloon:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .balloon:nth-child(3) { left: 40%; animation-delay: 2s; }
+        .balloon:nth-child(4) { left: 60%; animation-delay: 3s; }
+        .balloon:nth-child(5) { left: 80%; animation-delay: 4s; }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) scale(0.8); }
+            to { transform: translateY(-10vh) scale(1); }
+        }
+
+        /* 音乐控制按钮 */
+        .music-control {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
     </style>
 </head>
 <body>
 
+    <!-- 气球动画 -->
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
     <div class="container">
         <h1>🎂 生日快乐！🎉</h1>
-        <p>愿你的每一天都充满幸福与惊喜 ✨</p>
-        <button class="btn">开启惊喜 💖</button>
+        <p id="message">愿你的每一天都充满幸福与惊喜 ✨</p>
+        <button class="btn" onclick="showSurprise()">点我开启惊喜 💖</button>
     </div>
+
+    <!-- 音乐播放器 -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.fesliyanstudios.com/play-mp3/4385" type="audio/mp3">
+        你的浏览器不支持音频播放。
+    </audio>
+    <button class="music-control btn" onclick="toggleMusic()">🎵 音乐开关</button>
+
+    <script>
+        function showSurprise() {
+            document.getElementById("message").innerHTML = "🎁 祝你拥有美好的一天！愿所有梦想成真！";
+            document.querySelector(".btn").innerHTML = "🎊 享受这一天！";
+        }
+
+        function toggleMusic() {
+            let music = document.getElementById("bgMusic");
+            if (music.paused) {
+                music.play();
+            } else {
+                music.pause();
+            }
+        }
+    </script>
 
 </body>
 </html>
