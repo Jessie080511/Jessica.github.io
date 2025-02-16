@@ -3,161 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最最最美的宝贝生日快乐！</title>
+    <title>最美宝贝生日快乐！</title>
     <style>
-        /* 基础样式 */
+        /* 统一基础样式 */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
             overflow: hidden;
             position: relative;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffcccc, #ffe5e5);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 10s ease infinite alternate;
         }
+
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
+
         .container {
-            text-align: center;
-            position: relative;
             z-index: 2;
+            padding: 20px;
         }
+
         h1 {
-        font-size: 5rem; /* 增大字体 */
-        font-family: 'Pacifico', cursive; /* 使用圆润的手写字体 */
-        color: #ff6f61; /* 深粉色 */
-        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8); /* 白色阴影 */
-        animation: glow 2s infinite alternate, float 3s ease-in-out infinite;
-    }
-    @keyframes glow {
-        0% { text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8); }
-        100% { text-shadow: 4px 4px 8px rgba(255, 255, 255, 1); }
-    }
-    @keyframes float {
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-20px); } /* 增加浮动幅度 */
-        100% { transform: translateY(0); }
-    }
+            font-size: 5rem;
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+        }
+
         h2 {
-        font-size: 2rem; /* 副标题字体稍小 */
-        font-family: 'Pacifico', cursive; /* 使用优雅的手写字体 */
-        color: #ff9a9e; /* 稍深的粉色 */
-        margin-top: 10px;
-        animation: glow 2s infinite alternate;
-    }
-    @keyframes glow {
-        0% { text-shadow: 0 0 10px rgba(255, 154, 158, 0.8), 0 0 20px rgba(250, 208, 196, 0.8), 0 0 30px rgba(255, 255, 255, 0.8); }
-        100% { text-shadow: 0 0 20px rgba(255, 154, 158, 1), 0 0 40px rgba(250, 208, 196, 1), 0 0 60px rgba(255, 255, 255, 1); }
-    }
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px rgba(255, 154, 158, 0.8), 0 0 20px rgba(250, 208, 196, 0.8), 0 0 30px rgba(255, 255, 255, 0.8); }
-            100% { text-shadow: 0 0 20px rgba(255, 154, 158, 1), 0 0 40px rgba(250, 208, 196, 1), 0 0 60px rgba(255, 255, 255, 1); }
+            font-size: 2rem;
+            font-weight: 300;
+            color: #ffeaea;
+            margin-top: 10px;
         }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); } /* 增加浮动幅度 */
-            100% { transform: translateY(0); }
-        }
+
         button {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 12px 25px;
+            border-radius: 30px;
             cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
             margin: 10px;
-            font-size: 1rem;
-            transition: transform 0.3s ease, background 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
         button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.5);
             transform: scale(1.1);
         }
+
         /* 弹窗样式 */
         .modal {
             display: none;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
             color: #fff;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 20px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            max-width: 400px;
-            margin: 20px auto;
-            position: relative;
-            animation: popIn 0.5s ease-in-out;
+            max-width: 500px;
+            margin: 50px auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             z-index: 3;
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
         .modal button {
             background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
         }
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        /* 流星特效 */
-        .meteor {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #fff;
-            border-radius: 50%;
-            animation: meteorFall 2s linear infinite;
-            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
-        }
-        @keyframes meteorFall {
-            0% { transform: translateY(-100vh) translateX(-100vw); opacity: 1; }
-            100% { transform: translateY(100vh) translateX(100vw); opacity: 0; }
-        }
-        /* 烟花特效 */
-        .firework {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #ff6f61;
-            border-radius: 50%;
-            animation: explode 1.5s ease-out infinite;
-            box-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61;
-        }
-        @keyframes explode {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(8); opacity: 0; }
-        }
-        /* 星星特效 */
-        .star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 1.5s infinite ease-in-out;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-        /* 音乐控制按钮 */
+
         .music-control {
             position: absolute;
             top: 20px;
@@ -165,106 +97,48 @@
             z-index: 4;
         }
     </style>
-    <!-- 引入 Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>最最最美的宝贝
-            生日快乐！</h1>
-        <h2>来自晏晏和莎莎的祝福
-            （实则是晏晏3小时的爆肝和莎莎的加油～）～</h2> <!-- 副标题 -->
-        <button onclick="showSurprise()">巴啦啦小惊喜</button>
-        <button onclick="showLetter()">巴啦啦小祝福</button>
+        <h1>最美的宝贝生日快乐！</h1>
+        <h2>愿你永远开心，永远闪闪发光✨</h2>
+        <button onclick="showSurprise()">点击领取生日惊喜 🎉</button>
+        <button onclick="showLetter()">生日祝福 💌</button>
     </div>
 
-    <!-- 生日惊喜弹窗 -->
     <div id="surpriseModal" class="modal">
-        <p>🎉 你有一个甜蜜的外卖订单即将送达！🎂🎁</p>
+        <p>🎂 你的甜蜜惊喜即将送达！期待吧！🎁</p>
         <button onclick="closeModal('surpriseModal')">关闭</button>
     </div>
 
-    <!-- 信件弹窗 -->
     <div id="letterModal" class="modal">
-        <p>致永远美丽聪慧的宝贝：</p>
-        <p>时间过得简直太快啦！我们都已经到阿美利卡一年半了，可能由于这一次相隔太远，有一种很久没见面的感觉。因为平常还是比较担心你情绪方面的问题（虽然我也不太稳定哈哈哈），所以希望你可以洗去30岁以前所有的焦虑、难过和失望，希望你可以有很多的能量迎接你的喜好和憧憬，也希望我们不管几岁都可以坦然接受时间的流逝以及时间带给我们的心态的转变，人生路远，一切皆是最好的时光💗</p>
+        <p>亲爱的宝贝：</p>
+        <p>希望你迎接每一个崭新的日子，收获快乐和成长。30岁以前的烦恼都会消散，未来是最美好的时光！</p>
         <button onclick="closeModal('letterModal')">关闭</button>
     </div>
 
-    <!-- 音乐控制按钮 -->
     <div class="music-control">
         <button onclick="toggleMusic()">🎵 播放/暂停</button>
     </div>
 
-    <!-- 背景音乐 -->
     <audio id="bg-music" autoplay loop>
         <source src="https://github.com/Jessie080511/Jessica.github.io/raw/refs/heads/main/%E5%AE%89%E6%BA%A5%20-%20%E6%9C%80%E5%A5%BD%E7%9A%84%E6%99%82%E5%85%89.mp3">
-        您的浏览器不支持音频元素。
     </audio>
 
-    <!-- 特效容器 -->
-    <div id="effects"></div>
-
     <script>
-        // 显示生日惊喜弹窗
         function showSurprise() {
             document.getElementById('surpriseModal').style.display = 'block';
-            createFireworks(20); // 点击时生成更多烟花
         }
 
-        // 显示信件弹窗
         function showLetter() {
             document.getElementById('letterModal').style.display = 'block';
-            createFireworks(20); // 点击时生成更多烟花
         }
 
-        // 关闭弹窗
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // 创建烟花特效
-        function createFireworks(count) {
-            const effectsContainer = document.getElementById('effects');
-            for (let i = 0; i < count; i++) {
-                const firework = document.createElement('div');
-                firework.classList.add('firework');
-                firework.style.left = Math.random() * 100 + 'vw';
-                firework.style.top = Math.random() * 100 + 'vh';
-                firework.style.animationDelay = Math.random() * 1 + 's';
-                effectsContainer.appendChild(firework);
-                setTimeout(() => firework.remove(), 1500); // 烟花消失
-            }
-        }
-
-        // 创建流星特效
-        function createMeteors(count) {
-            const effectsContainer = document.getElementById('effects');
-            for (let i = 0; i < count; i++) {
-                const meteor = document.createElement('div');
-                meteor.classList.add('meteor');
-                meteor.style.left = Math.random() * 100 + 'vw';
-                meteor.style.top = Math.random() * 100 + 'vh';
-                meteor.style.animationDuration = Math.random() * 1 + 2 + 's';
-                effectsContainer.appendChild(meteor);
-                setTimeout(() => meteor.remove(), 3000); // 流星消失
-            }
-        }
-
-        // 创建星星特效
-        function createStars(count) {
-            const effectsContainer = document.getElementById('effects');
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.animationDelay = Math.random() * 1 + 's';
-                effectsContainer.appendChild(star);
-            }
-        }
-
-        // 控制音乐播放
         function toggleMusic() {
             const music = document.getElementById('bg-music');
             if (music.paused) {
@@ -273,13 +147,6 @@
                 music.pause();
             }
         }
-
-        // 页面加载时生成特效
-        window.onload = () => {
-            createFireworks(20); // 更多烟花
-            createStars(200); // 更多星星
-            setInterval(() => createMeteors(10), 1000); // 每1秒生成更多流星
-        };
     </script>
 </body>
 </html>
