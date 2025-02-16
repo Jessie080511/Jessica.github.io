@@ -41,43 +41,6 @@
             animation: fadeIn 2s ease-in-out forwards;
         }
 
-        /* 气球动画 */
-        .balloon {
-            position: absolute;
-            width: 50px;
-            height: 70px;
-            background-color: rgba(255, 100, 150, 0.8);
-            border-radius: 50%;
-            animation: floatUp 5s infinite ease-in-out;
-        }
-
-        .balloon:nth-child(2) { left: 10%; animation-delay: 1s; }
-        .balloon:nth-child(3) { left: 30%; animation-delay: 2s; }
-        .balloon:nth-child(4) { left: 50%; animation-delay: 3s; }
-        .balloon:nth-child(5) { left: 70%; animation-delay: 4s; }
-        .balloon:nth-child(6) { left: 90%; animation-delay: 5s; }
-
-        @keyframes floatUp {
-            from { transform: translateY(100vh) scale(0.8); }
-            to { transform: translateY(-10vh) scale(1); }
-        }
-
-        /* 烟花动画 */
-        .firework {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: yellow;
-            border-radius: 50%;
-            opacity: 0;
-            animation: explode 1s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(5); opacity: 0; }
-        }
-
         /* 按钮 */
         .btn {
             background: linear-gradient(135deg, #e99bb6, #d285a6);
@@ -96,22 +59,49 @@
             transform: scale(1.05);
         }
 
-        /* 生日信件 */
-        #letter, #surprise {
+        /* 生日惊喜文字特效 */
+        #surprise {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ff4081;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.6);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 64, 129, 0.6); }
+            100% { text-shadow: 0 0 30px rgba(255, 64, 129, 1); }
+        }
+
+        /* 生日信封 */
+        .letter-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 250px;
+            background-color: white;
             border-radius: 15px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 300px;
+            overflow: hidden;
+            transition: transform 0.5s ease-in-out;
         }
 
-        /* 关闭按钮 */
+        .letter-content {
+            padding: 20px;
+            font-size: 1.2em;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
         .close-btn {
             margin-top: 10px;
             background: crimson;
@@ -145,13 +135,6 @@
 </head>
 <body>
 
-    <!-- 气球动画 -->
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-
     <div class="container">
         <h1>🎂 生日快乐！🎉</h1>
         <p>愿你的每一天都充满幸福与惊喜 ✨</p>
@@ -159,21 +142,16 @@
         <button class="btn" onclick="showLetter()">💌 生日祝福</button>
     </div>
 
-    <!-- 生日信 -->
-    <div id="letter">
-        <h2>💌 生日祝福</h2>
-        <p>亲爱的朋友，<br>愿你在新的一岁里健康快乐，梦想成真！🎊</p>
-        <button class="close-btn" onclick="closeLetter()">关闭</button>
-    </div>
+    <!-- 生日惊喜文字 -->
+    <div id="surprise">✨ 祝你永远幸福，梦想成真！🎊</div>
 
-    <!-- 烟花 -->
-    <div id="firework-container"></div>
-
-    <!-- 惊喜 -->
-    <div id="surprise">
-        <h2>🎁 生日大礼包</h2>
-        <p>🎂 祝你开心每一天！</p>
-        <button class="close-btn" onclick="closeSurprise()">关闭</button>
+    <!-- 生日信封 -->
+    <div class="letter-container" id="letter">
+        <div class="letter-content">
+            <h2>💌 亲爱的朋友</h2>
+            <p>愿你在新的一岁里健康快乐，<br>梦想成真，万事顺遂！🎊</p>
+            <button class="close-btn" onclick="closeLetter()">关闭</button>
+        </div>
     </div>
 
     <!-- 音乐播放器 -->
@@ -184,28 +162,24 @@
 
     <script>
         function showSurprise() {
-            document.getElementById("surprise").style.display = "block";
-            let fireworkContainer = document.getElementById("firework-container");
-            for (let i = 0; i < 10; i++) {
-                let firework = document.createElement("div");
-                firework.classList.add("firework");
-                firework.style.left = Math.random() * 100 + "vw";
-                firework.style.top = Math.random() * 100 + "vh";
-                fireworkContainer.appendChild(firework);
-                setTimeout(() => firework.remove(), 1000);
-            }
-        }
-
-        function closeSurprise() {
-            document.getElementById("surprise").style.display = "none";
+            let surprise = document.getElementById("surprise");
+            surprise.style.display = "block";
+            surprise.style.animation = "fadeIn 1.5s ease-in-out forwards";
+            setTimeout(() => {
+                surprise.style.display = "none";
+            }, 3000);
         }
 
         function showLetter() {
-            document.getElementById("letter").style.display = "block";
+            let letter = document.getElementById("letter");
+            letter.style.display = "block";
+            letter.style.transform = "scale(1)";
         }
 
         function closeLetter() {
-            document.getElementById("letter").style.display = "none";
+            let letter = document.getElementById("letter");
+            letter.style.transform = "scale(0)";
+            setTimeout(() => { letter.style.display = "none"; }, 500);
         }
 
         function toggleMusic() {
