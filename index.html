@@ -7,14 +7,16 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        /* 背景：渐变 + 柔和光斑 */
+        /* 🌈 动态渐变背景 + 光晕特效 */
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
-            background: radial-gradient(circle at top, #f8cdda, #f0a6c1);
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientMove 6s infinite alternate ease-in-out;
             font-family: 'Poppins', sans-serif;
-            color: #4a2c3a;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,43 +24,52 @@
             position: relative;
         }
 
-        /* 光斑特效 */
-        .background-effects {
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* 🌟 粒子漂浮特效 */
+        .particles {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 70%);
-            opacity: 0.5;
-            animation: lightGlow 5s infinite alternate ease-in-out;
+            overflow: hidden;
+            z-index: 0;
         }
 
-        @keyframes lightGlow {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 6s infinite linear;
         }
 
-        /* 卡片容器 */
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        /* 📦 卡片容器 */
         .container {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
             border-radius: 15px;
             padding: 40px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 2;
             animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* 文字动画 */
-        h1, p {
-            opacity: 0;
-            animation: fadeIn 2s ease-in-out forwards;
-        }
-
-        /* 按钮样式 */
+        /* 🔘 按钮 */
         .btn {
-            background: linear-gradient(135deg, #d86b85, #c45a70);
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
             color: white;
             padding: 12px 24px;
             font-size: 1.2em;
@@ -70,7 +81,7 @@
         }
 
         .btn:hover {
-            background: linear-gradient(135deg, #c45a70, #d86b85);
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
             transform: scale(1.05);
         }
 
@@ -98,7 +109,7 @@
             opacity: 1;
         }
 
-        /* 关闭按钮 */
+        /* ❌ 关闭按钮 */
         .close-btn {
             margin-top: 10px;
             background: crimson;
@@ -124,7 +135,7 @@
             align-items: center;
             cursor: pointer;
             font-size: 24px;
-            color: #5c3d50;
+            color: #fff;
             transition: all 0.3s ease;
         }
 
@@ -132,7 +143,7 @@
 </head>
 <body>
 
-    <div class="background-effects"></div>
+    <div class="particles"></div>
 
     <div class="container">
         <h1>🎂 生日快乐！🎉</h1>
@@ -148,7 +159,7 @@
         <button class="close-btn" onclick="closePopup('surprise')">关闭</button>
     </div>
 
-    <!-- 💌 生日信封 -->
+    <!-- 💌 生日信 -->
     <div id="letter" class="popup">
         <h2>💌 生日祝福</h2>
         <p>亲爱的朋友，<br>愿你在新的一岁里健康快乐，<br>梦想成真，万事顺遂！🎊</p>
@@ -180,6 +191,20 @@
                 music.pause();
             }
         }
+
+        // 🌟 生成粒子特效
+        function createParticles() {
+            let particlesContainer = document.querySelector(".particles");
+            for (let i = 0; i < 20; i++) {
+                let particle = document.createElement("div");
+                particle.classList.add("particle");
+                particle.style.left = Math.random() * 100 + "vw";
+                particle.style.top = Math.random() * 100 + "vh";
+                particle.style.animationDelay = Math.random() * 5 + "s";
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
     </script>
 
 </body>
