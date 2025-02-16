@@ -181,7 +181,7 @@
     <!-- 信件弹窗 -->
     <div id="letterModal" class="modal">
         <p>致永远美丽聪慧的宝贝：</p>
-        <p>时间过得简直太快啦！我们都已经到阿美利卡一年半了，可能由于这一次相隔太远，有一种很久没见面的感觉。因为平常还是比较担心你情绪方面的问题（虽然我也不太稳定哈哈哈），所以希望你可以洗去30岁以前所有的焦虑、难过和失望，希望你可以有很多的能量迎接你的喜好和憧憬，也希望我们不管几岁都可以坦然接受时间的流逝以及时间带给我们的心态的转变，人生路远，一切皆是最好的时光🎁</p>
+        <p>时间过得简直太快啦！我们都已经到阿美利卡一年半了，可能由于这一次相隔太远，有一种很久没见面的感觉。因为平常还是比较担心你情绪方面的问题（虽然我也不太稳定哈哈哈），所以希望你可以洗去30岁以前所有的焦虑、难过和失望，希望你可以有很多的能量迎接你的喜好和憧憬，也希望我们不管几岁都可以坦然接受时间的流逝以及时间带给我们的心态的转变，人生路远，一切皆是最好的时光💗</p>
         <button onclick="closeModal('letterModal')">关闭</button>
     </div>
 
@@ -191,10 +191,10 @@
     </div>
 
     <!-- 背景音乐 -->
-    <audio id="bg-music" autoplay loop>
-        <source src="https://github.com/Jessie080511/Jessica.github.io/raw/refs/heads/main/%E5%AE%89%E6%BA%A5%20-%20%E6%9C%80%E5%A5%BD%E7%9A%84%E6%99%82%E5%85%89.mp3">
-        您的浏览器不支持音频元素。
+    <audio id="bgMusic" loop>
+        <source src="你的MP3链接" type="audio/mp3">
     </audio>
+    <button class="music-control" onclick="toggleMusic()">🎵</button>
 
     <!-- 特效容器 -->
     <div id="effects"></div>
@@ -258,15 +258,6 @@
             }
         }
 
-        // 控制音乐播放
-        function toggleMusic() {
-            const music = document.getElementById('bg-music');
-            if (music.paused) {
-                music.play();
-            } else {
-                music.pause();
-            }
-        }
 
         // 页面加载时生成特效
         window.onload = () => {
