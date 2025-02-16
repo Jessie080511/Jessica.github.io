@@ -7,12 +7,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        /* 背景：渐变色 + 模糊 */
+        /* 背景：渐变 + 柔和光斑 */
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
-            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+            background: radial-gradient(circle at top, #f8cdda, #f0a6c1);
             font-family: 'Poppins', sans-serif;
             color: #4a2c3a;
             display: flex;
@@ -22,9 +22,24 @@
             position: relative;
         }
 
+        /* 光斑特效 */
+        .background-effects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 70%);
+            opacity: 0.5;
+            animation: lightGlow 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes lightGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
         /* 卡片容器 */
         .container {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 40px;
@@ -59,42 +74,28 @@
             transform: scale(1.05);
         }
 
-        /* 🎊 生日惊喜：淡入大字特效 */
-        #surprise {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3em;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            animation: fadeInScale 1.5s ease-in-out forwards;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-        }
-
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        /* 💌 生日信封 */
-        .letter-container {
+        /* 🎊 生日惊喜 */
+        .popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            width: 320px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
-            padding: 20px;
-            transition: transform 0.4s ease-in-out;
+            width: 350px;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .popup.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
         }
 
         /* 关闭按钮 */
@@ -131,21 +132,27 @@
 </head>
 <body>
 
+    <div class="background-effects"></div>
+
     <div class="container">
         <h1>🎂 生日快乐！🎉</h1>
         <p>愿你的每一天都充满幸福与惊喜 ✨</p>
-        <button class="btn" onclick="showSurprise()">🎊 开启惊喜</button>
-        <button class="btn" onclick="showLetter()">💌 生日祝福</button>
+        <button class="btn" onclick="showPopup('surprise')">🎊 开启惊喜</button>
+        <button class="btn" onclick="showPopup('letter')">💌 生日祝福</button>
     </div>
 
     <!-- 🎊 生日惊喜 -->
-    <div id="surprise">🎇 祝你永远幸福，梦想成真！ 🎊</div>
+    <div id="surprise" class="popup">
+        <h2>🎇 惊喜降临！</h2>
+        <p>祝你永远幸福，梦想成真！ 🎊</p>
+        <button class="close-btn" onclick="closePopup('surprise')">关闭</button>
+    </div>
 
     <!-- 💌 生日信封 -->
-    <div class="letter-container" id="letter">
+    <div id="letter" class="popup">
         <h2>💌 生日祝福</h2>
         <p>亲爱的朋友，<br>愿你在新的一岁里健康快乐，<br>梦想成真，万事顺遂！🎊</p>
-        <button class="close-btn" onclick="closeLetter()">关闭</button>
+        <button class="close-btn" onclick="closePopup('letter')">关闭</button>
     </div>
 
     <!-- 🎶 音乐 -->
@@ -155,28 +162,14 @@
     <button class="music-control" onclick="toggleMusic()">🎵</button>
 
     <script>
-        function showSurprise() {
-            let surprise = document.getElementById("surprise");
-            surprise.style.display = "block";
-            setTimeout(() => {
-                surprise.style.display = "none";
-            }, 2500);
+        function showPopup(id) {
+            let popup = document.getElementById(id);
+            popup.classList.add("show");
         }
 
-        function showLetter() {
-            let letter = document.getElementById("letter");
-            letter.style.display = "block";
-            setTimeout(() => {
-                letter.style.transform = "scale(1)";
-            }, 50);
-        }
-
-        function closeLetter() {
-            let letter = document.getElementById("letter");
-            letter.style.transform = "scale(0.8)";
-            setTimeout(() => {
-                letter.style.display = "none";
-            }, 400);
+        function closePopup(id) {
+            let popup = document.getElementById(id);
+            popup.classList.remove("show");
         }
 
         function toggleMusic() {
