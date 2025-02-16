@@ -2,10 +2,27 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐！</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            font-size: 2em;
+            color: white;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 3em;
+        }
+    </style>
 </head>
 <body>
-    <h1>hello world！</h1>
-    <p>This is my GitHub Pages。</p>
+    <h1>🎉 生日快乐！🎂🥳</h1>
+    <p>愿你拥有美好的一天！</p>
 </body>
 </html>
