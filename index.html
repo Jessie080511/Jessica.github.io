@@ -35,19 +35,10 @@
             animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* 文字 & 动画 */
-        h1 {
-            font-size: 2.5em;
-            margin: 0;
+        /* 文字动画 */
+        h1, p {
             opacity: 0;
             animation: fadeIn 2s ease-in-out forwards;
-        }
-
-        p {
-            font-size: 1.2em;
-            margin: 15px 0;
-            opacity: 0;
-            animation: fadeInUp 2s ease-in-out forwards;
         }
 
         /* 气球动画 */
@@ -71,7 +62,7 @@
             to { transform: translateY(-10vh) scale(1); }
         }
 
-        /* 烟花特效 */
+        /* 烟花动画 */
         .firework {
             position: absolute;
             width: 10px;
@@ -79,6 +70,12 @@
             background-color: yellow;
             border-radius: 50%;
             opacity: 0;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
         }
 
         /* 按钮 */
@@ -100,7 +97,7 @@
         }
 
         /* 生日信件 */
-        #letter {
+        #letter, #surprise {
             display: none;
             position: absolute;
             top: 50%;
@@ -111,6 +108,18 @@
             border-radius: 15px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
+            width: 300px;
+        }
+
+        /* 关闭按钮 */
+        .close-btn {
+            margin-top: 10px;
+            background: crimson;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         /* 音乐控制按钮 */
@@ -145,16 +154,26 @@
 
     <div class="container">
         <h1>🎂 生日快乐！🎉</h1>
-        <p id="message">愿你的每一天都充满幸福与惊喜 ✨</p>
-        <button class="btn" onclick="showSurprise()">点我开启惊喜 💖</button>
-        <button class="btn" onclick="showLetter()">💌 查看生日祝福</button>
+        <p>愿你的每一天都充满幸福与惊喜 ✨</p>
+        <button class="btn" onclick="showSurprise()">🎊 开启惊喜</button>
+        <button class="btn" onclick="showLetter()">💌 生日祝福</button>
     </div>
 
     <!-- 生日信 -->
     <div id="letter">
         <h2>💌 生日祝福</h2>
         <p>亲爱的朋友，<br>愿你在新的一岁里健康快乐，梦想成真！🎊</p>
-        <button class="btn" onclick="closeLetter()">关闭</button>
+        <button class="close-btn" onclick="closeLetter()">关闭</button>
+    </div>
+
+    <!-- 烟花 -->
+    <div id="firework-container"></div>
+
+    <!-- 惊喜 -->
+    <div id="surprise">
+        <h2>🎁 生日大礼包</h2>
+        <p>🎂 祝你开心每一天！</p>
+        <button class="close-btn" onclick="closeSurprise()">关闭</button>
     </div>
 
     <!-- 音乐播放器 -->
@@ -165,7 +184,28 @@
 
     <script>
         function showSurprise() {
-            alert("🎇 生日快乐！🎊 祝你幸福美满！");
+            document.getElementById("surprise").style.display = "block";
+            let fireworkContainer = document.getElementById("firework-container");
+            for (let i = 0; i < 10; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("firework");
+                firework.style.left = Math.random() * 100 + "vw";
+                firework.style.top = Math.random() * 100 + "vh";
+                fireworkContainer.appendChild(firework);
+                setTimeout(() => firework.remove(), 1000);
+            }
+        }
+
+        function closeSurprise() {
+            document.getElementById("surprise").style.display = "none";
+        }
+
+        function showLetter() {
+            document.getElementById("letter").style.display = "block";
+        }
+
+        function closeLetter() {
+            document.getElementById("letter").style.display = "none";
         }
 
         function toggleMusic() {
@@ -175,14 +215,6 @@
             } else {
                 music.pause();
             }
-        }
-
-        function showLetter() {
-            document.getElementById("letter").style.display = "block";
-        }
-
-        function closeLetter() {
-            document.getElementById("letter").style.display = "none";
         }
     </script>
 
