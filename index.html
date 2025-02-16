@@ -68,6 +68,18 @@
             from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 0, 150, 0.7);
+            opacity: 0.8;
+            animation: confetti linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -100,7 +112,15 @@
         function closePopup(id) {
             document.getElementById(id).style.display = "none";
         }
+        function createConfetti() {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
+        }
+        setInterval(createConfetti, 300);
     </script>
 </body>
 </html>
-
