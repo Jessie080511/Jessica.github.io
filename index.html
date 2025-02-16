@@ -35,12 +35,13 @@
             transition: 0.3s;
             animation: pulse 2s infinite;
             box-shadow: 0px 0px 15px rgba(255, 0, 150, 0.6);
+            margin: 10px;
         }
         .button:hover {
             background: #ff5c8a;
             transform: scale(1.1);
         }
-        .letter {
+        .popup {
             display: none;
             position: fixed;
             top: 50%;
@@ -67,30 +68,6 @@
             from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
-        @keyframes fall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 0.5; }
-        }
-        .heart {
-            position: absolute;
-            color: #ff4d6d;
-            font-size: 20px;
-            animation: fall linear infinite;
-        }
-        .twinkle-star {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle 3s infinite;
-        }
     </style>
 </head>
 <body>
@@ -98,46 +75,32 @@
         <source src="your-music-file.mp3" type="audio/mpeg">
     </audio>
     <div class="container">
-        <button class="button" onclick="openLetter()">✨ 点击查看生日祝福 ✨</button>
+        <button class="button" onclick="openPopup('letter')">📜 生日祝福信</button>
+        <button class="button" onclick="openPopup('surprise')">🎁 生日惊喜</button>
     </div>
-    <div class="letter" id="letter">
+    <div class="popup" id="letter">
         <h2>🎉 生日快乐！🎂</h2>
         <p>亲爱的朋友，愿你的每一天都充满阳光和笑容！🌟🎈</p>
-        <button class="close" onclick="closeLetter()">关闭</button>
+        <button class="close" onclick="closePopup('letter')">关闭</button>
+    </div>
+    <div class="popup" id="surprise">
+        <h2>🎁 生日惊喜！</h2>
+        <p>点击播放音乐，让你的生日充满快乐！🎶💖</p>
+        <button class="close" onclick="closePopup('surprise')">关闭</button>
     </div>
     <script>
-        function openLetter() {
-            document.getElementById("letter").style.display = "block";
+        function openPopup(id) {
+            document.getElementById(id).style.display = "block";
             setTimeout(() => {
-                document.getElementById("letter").style.transform = "translate(-50%, -50%) scale(1)";
-                document.getElementById("letter").style.opacity = "1";
+                document.getElementById(id).style.transform = "translate(-50%, -50%) scale(1)";
+                document.getElementById(id).style.opacity = "1";
             }, 10);
             document.getElementById("music").play();
         }
-        function closeLetter() {
-            document.getElementById("letter").style.display = "none";
+        function closePopup(id) {
+            document.getElementById(id).style.display = "none";
         }
-        function createHearts() {
-            const heart = document.createElement("div");
-            heart.classList.add("heart");
-            heart.innerHTML = "❤️";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            heart.style.fontSize = Math.random() * 30 + 10 + "px";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }
-        function createStars() {
-            const star = document.createElement("div");
-            star.classList.add("twinkle-star");
-            star.style.left = Math.random() * 100 + "vw";
-            star.style.top = Math.random() * 100 + "vh";
-            star.style.animationDuration = Math.random() * 3 + 1 + "s";
-            document.body.appendChild(star);
-            setTimeout(() => star.remove(), 4000);
-        }
-        setInterval(createHearts, 150);
-        setInterval(createStars, 500);
     </script>
 </body>
 </html>
+
