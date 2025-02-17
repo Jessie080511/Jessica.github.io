@@ -34,7 +34,7 @@
         h1 {
             font-size: 4rem; /* 主标题字体 */
             font-family: 'Pacifico', cursive; /* 使用与h2相同的字体 */
-            color: #ff6f61; /* 深粉色 */
+            color: #ffcccc; /* 与h2完全一致的颜色 */
             animation: glow 2s infinite alternate, float 3s ease-in-out infinite;
             text-shadow: 0 0 10px rgba(255, 111, 97, 0.8), 0 0 20px rgba(255, 154, 158, 0.8), 0 0 30px rgba(250, 208, 196, 0.8);
             margin: 0;
@@ -255,11 +255,15 @@
 
         // 音乐控制
         const bgMusic = document.getElementById('bgMusic');
+        const musicButton = document.querySelector('.music-control');
+
         function toggleMusic() {
             if (bgMusic.paused) {
                 bgMusic.play();
+                musicButton.textContent = '🎵'; // 播放时显示音符
             } else {
                 bgMusic.pause();
+                musicButton.textContent = '🔇'; // 暂停时显示静音图标
             }
         }
 
@@ -271,7 +275,10 @@
 
             // 用户点击页面时自动播放音乐
             document.body.addEventListener('click', () => {
-                bgMusic.play();
+                if (bgMusic.paused) {
+                    bgMusic.play();
+                    musicButton.textContent = '🎵'; // 播放时显示音符
+                }
             });
         };
     </script>
