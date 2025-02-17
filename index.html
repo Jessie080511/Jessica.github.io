@@ -174,7 +174,7 @@
 
     <!-- 生日惊喜弹窗 -->
     <div id="surpriseModal" class="modal">
-        <p>🎉 你的惊喜蛋糕已送达！🎂🎁</p>
+        <p>🎉 你的生日蛋糕已送达！🎂🎁</p>
         <button onclick="closeModal('surpriseModal')">关闭</button>
     </div>
 
@@ -186,7 +186,7 @@
     </div>
 
     <!-- 背景音乐 -->
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop autoplay>
         <source src="https://github.com/Jessie080511/Jessica.github.io/raw/refs/heads/main/%E5%AE%89%E6%BA%A5%20-%20%E6%9C%80%E5%A5%BD%E7%9A%84%E6%99%82%E5%85%89.mp3" type="audio/mp3">
     </audio>
     <button class="music-control" onclick="toggleMusic()">🎵</button>
@@ -273,12 +273,15 @@
             createStars(1000); // 初始生成更多星星
             setInterval(() => createMeteors(10), 500); // 每0.5秒生成更多流星
 
-            // 用户点击页面时自动播放音乐
-            document.body.addEventListener('click', () => {
-                if (bgMusic.paused) {
-                    bgMusic.play();
-                    musicButton.textContent = '🎵'; // 播放时显示音符
-                }
+            // 尝试自动播放音乐
+            bgMusic.play().catch(() => {
+                // 如果自动播放失败，等待用户交互
+                document.body.addEventListener('click', () => {
+                    if (bgMusic.paused) {
+                        bgMusic.play();
+                        musicButton.textContent = '🎵'; // 播放时显示音符
+                    }
+                });
             });
         };
     </script>
