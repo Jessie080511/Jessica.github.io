@@ -3,67 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>了解度测试 🎂</title>
+  <title>了解度测试 💙</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: radial-gradient(circle at top, #a0e0ff, #ffffff);
+      padding: 0;
+      background: linear-gradient(to bottom right, #cfefff, #ffffff);
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      text-align: center;
-      animation: fadeIn 1s ease-in-out;
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      position: relative;
       z-index: 2;
     }
 
-    h1 {
+    h1, h2 {
       color: #1e90ff;
-      font-size: 28px;
-      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .question-box, .gift-box {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      padding: 25px;
+      margin-bottom: 30px;
     }
 
     label {
-      display: block;
+      font-weight: bold;
       color: #007acc;
-      font-size: 18px;
-      margin-bottom: 10px;
     }
 
     input {
-      padding: 10px;
       width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 20px;
       border-radius: 8px;
       border: 1px solid #b3e0ff;
-      margin-bottom: 20px;
-      font-size: 16px;
     }
 
     button {
       background-color: #1e90ff;
       color: white;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 12px 20px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #1c86ee;
+      background-color: #187bcd;
     }
 
     .hidden {
@@ -71,69 +70,69 @@
     }
 
     .result {
-      font-size: 20px;
       color: #1e90ff;
-      margin-top: 20px;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    .letter {
+      white-space: pre-wrap;
+      background: #f8fcff;
+      border: 1px solid #cce7ff;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #333;
+      animation: fadeIn 1s ease-in-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .particles {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0;
+    /* 漂浮爱心背景 */
+    .hearts {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       overflow: hidden;
+      z-index: 0;
     }
-    .particles span {
+
+    .hearts span {
       position: absolute;
       display: block;
-      width: 10px; height: 10px;
-      background: rgba(30,144,255, 0.3);
-      animation: float 10s linear infinite;
-      border-radius: 50%;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) scale(0.5);
-        opacity: 0;
-      }
-    }
-
-    #letterBox {
-      text-align: left;
-      white-space: pre-wrap;
+      color: rgba(255,105,180,0.2);
+      animation: floatHeart 10s linear infinite;
       font-size: 18px;
-      color: #333;
-      margin-top: 20px;
-      padding: 20px;
-      background: #f3fbff;
-      border-radius: 10px;
-      border: 1px solid #cce7ff;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="particles" id="particles"></div>
-  <div class="card" id="quiz">
-    <h1>💙 了解度测试，达到90%级以上解锁礼物哦💙</h1>
-    <div id="questionBox">
+  <audio id="bgm" loop autoplay src="YOUR_BACKGROUND_MUSIC_LINK_HERE"></audio>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="container">
+    <h1>💙 了解度测试，超过 90% 即可解锁专属信件 💙</h1>
+    <div class="question-box" id="questionBox">
       <label id="questionText"></label>
       <input type="text" id="answerInput" placeholder="请输入答案..." />
       <button onclick="submitAnswer()">下一题</button>
       <div class="result" id="feedback"></div>
     </div>
-    <div id="giftBox" class="hidden">
+
+    <div class="gift-box hidden" id="giftBox">
       <h2 id="scoreResult"></h2>
-      <button id="showLetterBtn" class="hidden" onclick="showLetter()">点我领取生日信 💌</button>
-      <div id="letterBox" class="hidden"></div>
+      <button class="hidden" id="showLetterBtn" onclick="showLetter()">💌 打开信件</button>
+      <div id="letterBox" class="letter hidden"></div>
     </div>
   </div>
 
@@ -154,24 +153,14 @@
     let current = 0;
     let correctCount = 0;
 
-    const particles = document.getElementById('particles');
-    for (let i = 0; i < 50; i++) {
-      const span = document.createElement('span');
-      span.style.left = Math.random() * 100 + 'vw';
-      span.style.top = Math.random() * 100 + 'vh';
-      span.style.width = span.style.height = Math.random() * 12 + 4 + 'px';
-      span.style.animationDuration = (5 + Math.random() * 10) + 's';
-      particles.appendChild(span);
-    }
-
     const questionText = document.getElementById('questionText');
     const answerInput = document.getElementById('answerInput');
     const feedback = document.getElementById('feedback');
-    const giftBox = document.getElementById('giftBox');
     const questionBox = document.getElementById('questionBox');
+    const giftBox = document.getElementById('giftBox');
     const letterBox = document.getElementById('letterBox');
-    const scoreResult = document.getElementById('scoreResult');
     const showLetterBtn = document.getElementById('showLetterBtn');
+    const scoreResult = document.getElementById('scoreResult');
 
     function showQuestion(index) {
       questionText.textContent = `${index + 1}. ${questions[index].q}`;
@@ -186,7 +175,7 @@
         correctCount++;
         feedback.textContent = '✅ 回答正确！';
       } else {
-        feedback.textContent = '❌ 这个答案不太对，但我们继续吧～';
+        feedback.textContent = '❌ 这个答案不太对～我们继续！';
       }
       current++;
       setTimeout(() => {
@@ -211,14 +200,37 @@
     }
 
     function showLetter() {
+      const message = `亲爱的宝贝：\n\n我猜你能答3道不能再多了 因为你是一个耳聋眼瞎加记性极差的人 我想给你深刻的解释一下为什么是这十个答案。 1.我从高中开始就喜欢张悬，不管她是什么立场，但她给了我思想和力量，很多时候我听她的歌不是在听调子，我是觉得像在听诗的旁白，有警醒和隽永。2.我说过很多次我喜欢苏轼，因为他有我羡慕但做不到的出世和洒脱，我最喜欢定风波，那是我最向往的人生状态。3.从初中开始我就觉得郑秀晶是最好看的女明星，amber是最有态度的中性女艺人。4.近几年只要有一点生活的感悟我都会想听到这首歌，我们总是在期待最好的时光，总是以为它还没来到，但其实过去的某一年，某一天就是最好的，会期待，证明还没有超过它。5.这是我认为苏打绿最好的一张专辑里最好的一首，这首歌的核心思想适用于任何一个时代中的任何一个边缘群体，6.没有久居过但很向往，喜欢它的城市底蕴。 7.我每天都在和你商量的问题，我觉得根源是你不喜欢学习，那我就很矛盾，好像我不能勉强你做不喜欢的事情，但是你是任何都不学，包括但不限于技能型、兴趣型、娱乐型，everything，我希望你可以汲取一些内容并且自己能感觉到进步和思想的丰富，最好是可以多互相分享，我也不是不让你看那些老太婆，但希望不只是看老太婆。8.其实最最最讨厌还是很政治，没有别的原因，就是单纯的学不好考不好。 9.我每天都在说要锻炼身体，感觉来美国后身体素质直线下滑，你也不会提醒我。10.目前没有哪一年的满足程度超过2018年，那是我灵魂最自由且充盈的一年，最合适的年纪，做了很多最喜欢的事，好像很简单，但现在看来很奢侈了，但也不失落，毕竟世间万物都不是静止的\n💌`;
       letterBox.classList.remove('hidden');
-      letterBox.textContent = `我猜你能答3道不能再多了 因为你是一个耳聋眼瞎加记性极差的人 我想给你深刻的解释一下为什么是这十个答案。 1.我从高中开始就喜欢张悬，不管她是什么立场，但她给了我思想和力量，很多时候我听她的歌不是在听调子，我是觉得像在听诗的旁白，有警醒和隽永。2.我说过很多次我喜欢苏轼，因为他有我羡慕但做不到的出世和洒脱，我最喜欢定风波，那是我最向往的人生状态。3.从初中开始我就觉得郑秀晶是最好看的女明星，amber是最有态度的中性女艺人。4.近几年只要有一点生活的感悟我都会想听到这首歌，我们总是在期待最好的时光，总是以为它还没来到，但其实过去的某一年，某一天就是最好的，会期待，证明还没有超过它。5.这是我认为苏打绿最好的一张专辑里最好的一首，这首歌的核心思想适用于任何一个时代中的任何一个边缘群体，6.没有久居过但很向往，喜欢它的城市底蕴。 7.我每天都在和你商量的问题，我觉得根源是你不喜欢学习，那我就很矛盾，好像我不能勉强你做不喜欢的事情，但是你是任何都不学，包括但不限于技能型、兴趣型、娱乐型，everything，我希望你可以汲取一些内容并且自己能感觉到进步和思想的丰富，最好是可以多互相分享，我也不是不让你看那些老太婆，但希望不只是看老太婆。8.其实最最最讨厌还是很政治，没有别的原因，就是单纯的学不好考不好。 9.我每天都在说要锻炼身体，感觉来美国后身体素质直线下滑，你也不会提醒我。10.目前没有哪一年的满足程度超过2018年，那是我灵魂最自由且充盈的一年，最合适的年纪，做了很多最喜欢的事，好像很简单，但现在看来很奢侈了，但也不失落，毕竟世间万物都不是静止的 💌`;
+      letterBox.textContent = '';
+      let i = 0;
+      function typeWriter() {
+        if (i < message.length) {
+          letterBox.textContent += message.charAt(i);
+          i++;
+          setTimeout(typeWriter, 40);
+        }
+      }
+      typeWriter();
     }
 
     showQuestion(current);
+
+    // 💖 爱心背景动画
+    const hearts = document.getElementById('hearts');
+    for (let i = 0; i < 60; i++) {
+      const span = document.createElement('span');
+      span.textContent = '💖';
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.top = Math.random() * 100 + 'vh';
+      span.style.fontSize = Math.random() * 20 + 10 + 'px';
+      span.style.animationDuration = (8 + Math.random() * 5) + 's';
+      hearts.appendChild(span);
+    }
   </script>
 </body>
 </html>
+
 
 
 
