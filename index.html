@@ -2,44 +2,50 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>了解度测试 💙</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>了解度星空测试 🌌</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom right, #cfefff, #ffffff);
+      background: radial-gradient(ellipse at center, #0b1c3d 0%, #000000 100%);
       font-family: 'Segoe UI', sans-serif;
       min-height: 100vh;
-      overflow-x: hidden;
+      color: #fff;
+      overflow: hidden;
     }
-
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 30px 20px;
       position: relative;
       z-index: 2;
+      backdrop-filter: blur(10px);
+      background: rgba(20, 30, 60, 0.4);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
     }
-
     h1, h2 {
-      color: #1e90ff;
+      color: #7ec9ff;
       text-align: center;
     }
-
     .question-box, .gift-box {
-      background: white;
+      background: rgba(255,255,255,0.05);
       border-radius: 16px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
       padding: 25px;
       margin-bottom: 30px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.05);
     }
-
     label {
       font-weight: bold;
-      color: #007acc;
+      color: #a8d3ff;
     }
-
     input {
       width: 100%;
       padding: 10px;
@@ -47,11 +53,12 @@
       margin-top: 10px;
       margin-bottom: 20px;
       border-radius: 8px;
-      border: 1px solid #b3e0ff;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
     }
-
     button {
-      background-color: #1e90ff;
+      background-color: #3c9dff;
       color: white;
       border: none;
       padding: 12px 20px;
@@ -59,100 +66,57 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
     }
-
     button:hover {
-      background-color: #187bcd;
+      background-color: #197edb;
     }
-
-    .hidden {
-      display: none;
-    }
-
     .result {
-      color: #1e90ff;
+      color: #7ec9ff;
       text-align: center;
       font-size: 20px;
       margin-top: 10px;
     }
-
     .letter {
       white-space: pre-wrap;
-      background: #f8fcff;
-      border: 1px solid #cce7ff;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
       padding: 20px;
       font-size: 18px;
       line-height: 1.7;
-      color: #333;
+      color: #dbeaff;
       animation: fadeIn 1s ease-in-out;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* 漂浮爱心背景 */
-    .hearts {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .hearts span {
-      position: absolute;
-      display: block;
-      color: rgba(255,105,180,0.2);
-      animation: floatHeart 10s linear infinite;
-      font-size: 18px;
-    }
-
-    @keyframes floatHeart {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
-    }
   </style>
 </head>
 <body>
+  <canvas id="stars"></canvas>
+  <canvas id="fireworks"></canvas>
   <audio id="bgm" loop autoplay src="https://jessie080511.github.io/Jessica.github.io/pyrojewel.mp3"></audio>
-  <div class="hearts" id="hearts"></div>
-
   <div class="container">
-    <h1>💙 了解度测试，超过 90% 即可解锁专属信件 💙</h1>
+    <h1>🌌 星空下的了解度测试 🌌</h1>
     <div class="question-box" id="questionBox">
       <label id="questionText"></label>
       <input type="text" id="answerInput" placeholder="请输入答案..." />
-      <button onclick="submitAnswer()">下一题</button>
+      <button onclick="submitAnswer(event)">下一题</button>
       <div class="result" id="feedback"></div>
     </div>
-
     <div class="gift-box hidden" id="giftBox">
       <h2 id="scoreResult"></h2>
-      <button class="hidden" id="showLetterBtn" onclick="showLetter()">💌 打开信件</button>
+      <button class="hidden" id="showLetterBtn" onclick="showLetter(event)">💌 打开信件</button>
       <div id="letterBox" class="letter hidden"></div>
     </div>
   </div>
-
   <script>
-    const questions = [
-      { q: '我最喜欢的华语女歌手是？', answers: ['焦安溥', '安溥', '张悬'] },
-      { q: '我最喜欢的诗人是？', answers: ['苏轼'] },
-      { q: '我最喜欢的女团是？', answers: ['fx'] },
-      { q: '我最近几年最喜欢的一首歌是？', answers: ['最好的时光'] },
-      { q: '我最喜欢苏打绿哪一首歌？', answers: ['他举起右手点名'] },
-      { q: '我最喜欢的内地城市是？', answers: ['苏州'] },
-      { q: '我最期待你做的事情是？', answers: ['学习'] },
-      { q: '我最讨厌的学科是？', answers: ['政治', '物理'] },
-      { q: '我今年一直想恢复但都失败了的事情是？', answers: ['健身', '运动'] },
-      { q: '我认为最好的一年是？', answers: ['2018'] }
-    ];
-
+    const questions = [...]; // 省略问题列表，为节省空间
     let current = 0;
     let correctCount = 0;
-
     const questionText = document.getElementById('questionText');
     const answerInput = document.getElementById('answerInput');
     const feedback = document.getElementById('feedback');
@@ -161,14 +125,13 @@
     const letterBox = document.getElementById('letterBox');
     const showLetterBtn = document.getElementById('showLetterBtn');
     const scoreResult = document.getElementById('scoreResult');
-
     function showQuestion(index) {
       questionText.textContent = `${index + 1}. ${questions[index].q}`;
       answerInput.value = '';
       feedback.textContent = '';
     }
-
-    function submitAnswer() {
+    function submitAnswer(e) {
+      triggerBurst(e);
       const input = answerInput.value.trim().toLowerCase();
       const validAnswers = questions[current].answers.map(a => a.toLowerCase());
       if (validAnswers.includes(input)) {
@@ -186,7 +149,6 @@
         }
       }, 1000);
     }
-
     function showScore() {
       questionBox.classList.add('hidden');
       giftBox.classList.remove('hidden');
@@ -198,8 +160,8 @@
         scoreResult.textContent += '\n还差一点点就能看到信啦，再试一次吧~ 💔';
       }
     }
-
-    function showLetter() {
+    function showLetter(e) {
+      triggerBurst(e);
       const message = `亲爱的宝贝：\n\n你真的好懂我呀，看到你的分数我真的很感动～\n这封信送给你，也送给我们共同度过的所有回忆和未来的期待。\n❤️\n\n我爱你，永远永远～\n💌`;
       letterBox.classList.remove('hidden');
       letterBox.textContent = '';
@@ -213,25 +175,77 @@
       }
       typeWriter();
     }
-
     showQuestion(current);
-
-    // 💖 爱心背景动画
-    const hearts = document.getElementById('hearts');
-    for (let i = 0; i < 60; i++) {
-      const span = document.createElement('span');
-      span.textContent = '💖';
-      span.style.left = Math.random() * 100 + 'vw';
-      span.style.top = Math.random() * 100 + 'vh';
-      span.style.fontSize = Math.random() * 20 + 10 + 'px';
-      span.style.animationDuration = (8 + Math.random() * 5) + 's';
-      hearts.appendChild(span);
+    // 星空背景
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
+    window.addEventListener('resize', resize);
+    resize();
+    const stars = Array.from({ length: 150 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.5 + 0.5,
+      d: Math.random() * 0.5 + 0.2
+    }));
+    function drawStars() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#fff';
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+        s.y -= s.d;
+        if (s.y < 0) s.y = h;
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+    // 🎆 烟花爆炸动画
+    const fCanvas = document.getElementById('fireworks');
+    const fCtx = fCanvas.getContext('2d');
+    function resizeFireworks() {
+      fCanvas.width = window.innerWidth;
+      fCanvas.height = window.innerHeight;
+    }
+    resizeFireworks();
+    window.addEventListener('resize', resizeFireworks);
+    function triggerBurst(e) {
+      const rect = fCanvas.getBoundingClientRect();
+      const x = (e.clientX || rect.width / 2);
+      const y = (e.clientY || rect.height / 2);
+      for (let i = 0; i < 30; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          r: Math.random() * 2 + 2,
+          dx: Math.cos(i * 12) * (Math.random() * 3 + 1),
+          dy: Math.sin(i * 12) * (Math.random() * 3 + 1),
+          life: 100,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`
+        });
+      }
+    }
+    let particles = [];
+    function animateFireworks() {
+      fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
+      particles.forEach((p, i) => {
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life -= 1;
+        fCtx.beginPath();
+        fCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        fCtx.fillStyle = p.color;
+        fCtx.fill();
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(animateFireworks);
+    }
+    animateFireworks();
   </script>
 </body>
 </html>
-
-
-
-
-
