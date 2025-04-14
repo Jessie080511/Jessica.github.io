@@ -3,86 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生日小测试 🎂</title>
+  <title>生日闯关小游戏 🎂</title>
   <style>
     body {
-      background-color: #e0f7ff;
+      margin: 0;
+      background: linear-gradient(135deg, #a0e0ff, #e0f7ff);
       font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .container {
+    .card {
       background: white;
       border-radius: 20px;
       padding: 30px;
-      max-width: 700px;
-      width: 100%;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
     }
 
     h1 {
       color: #1e90ff;
-      text-align: center;
+      font-size: 28px;
       margin-bottom: 20px;
     }
 
     label {
       display: block;
-      font-weight: bold;
       color: #007acc;
-      margin-bottom: 5px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
     input {
+      padding: 10px;
       width: 100%;
-      padding: 8px;
-      margin-bottom: 20px;
-      border: 1px solid #b3e0ff;
       border-radius: 8px;
+      border: 1px solid #b3e0ff;
+      margin-bottom: 20px;
+      font-size: 16px;
     }
 
     button {
       background-color: #1e90ff;
       color: white;
       border: none;
-      padding: 12px;
+      padding: 12px 24px;
       border-radius: 10px;
-      width: 100%;
       font-size: 16px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
       background-color: #1c86ee;
     }
 
-    .result {
-      text-align: center;
-      color: #007acc;
+    .hidden {
+      display: none;
     }
 
-    .gift-link {
+    .result {
+      font-size: 20px;
       color: #1e90ff;
-      font-size: 18px;
-      text-decoration: underline;
+      margin-top: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎂 亲爱的生日小测试 🎁</h1>
-    <form id="quizForm">
-      <div id="questions"></div>
-      <button type="submit">提交并查看礼物 🎉</button>
-    </form>
-    <div id="result" class="result" style="display: none;">
-      <h2>全对啦！你太厉害啦！🥳</h2>
-      <p>答对了全部问题，礼物就是 👉</p>
-      <a href="https://your-gift-link.com" class="gift-link" target="_blank">点我领取生日礼物 💝</a>
+  <div class="card" id="quiz">
+    <h1>🎉 答对每题才能继续 🎉</h1>
+    <div id="questionBox">
+      <label id="questionText"></label>
+      <input type="text" id="answerInput" placeholder="请输入答案..." />
+      <button onclick="submitAnswer()">提交</button>
+      <div class="result" id="feedback"></div>
+    </div>
+    <div id="giftBox" class="hidden">
+      <h2>🎁 全部答对啦！</h2>
+      <p>你的生日惊喜礼物链接 👉</p>
+      <a href="https://your-gift-link.com" target="_blank" style="font-size:18px; color:#1e90ff; text-decoration:underline;">点我领取 💝</a>
     </div>
   </div>
 
@@ -92,7 +102,7 @@
       { q: '我最喜欢的诗人是？', answers: ['苏轼'] },
       { q: '我最喜欢的女团是？', answers: ['fx'] },
       { q: '我最近几年最喜欢的一首歌是？', answers: ['最好的时光'] },
-      { q: '苏打绿哪一首歌是关于希特勒？', answers: ['无与伦比的美丽'] },
+      { q: '苏打绿哪一首歌是关于希特勒？', answers: ['他举起右手点名'] },
       { q: '我最喜欢的内地城市是？', answers: ['苏州'] },
       { q: '我最期待你做的事情是？', answers: ['学习'] },
       { q: '我最讨厌的学科是？', answers: ['政治', '物理'] },
@@ -100,44 +110,37 @@
       { q: '我认为最好的一年是？', answers: ['2018'] }
     ];
 
-    const questionsContainer = document.getElementById('questions');
+    let current = 0;
 
-    questions.forEach((item, index) => {
-      const label = document.createElement('label');
-      label.textContent = `${index + 1}. ${item.q}`;
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.required = true;
-      input.name = `q${index}`;
-      input.dataset.answers = JSON.stringify(item.answers.map(a => a.toLowerCase()));
-      questionsContainer.appendChild(label);
-      questionsContainer.appendChild(input);
-    });
+    const questionText = document.getElementById('questionText');
+    const answerInput = document.getElementById('answerInput');
+    const feedback = document.getElementById('feedback');
+    const giftBox = document.getElementById('giftBox');
+    const questionBox = document.getElementById('questionBox');
 
-    const form = document.getElementById('quizForm');
-    const result = document.getElementById('result');
+    function showQuestion(index) {
+      questionText.textContent = `${index + 1}. ${questions[index].q}`;
+      answerInput.value = '';
+      feedback.textContent = '';
+    }
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const inputs = form.querySelectorAll('input');
-      let allCorrect = true;
-
-      inputs.forEach((input) => {
-        const userAnswer = input.value.trim().toLowerCase();
-        const correctAnswers = JSON.parse(input.dataset.answers);
-        if (!correctAnswers.includes(userAnswer)) {
-          allCorrect = false;
+    function submitAnswer() {
+      const input = answerInput.value.trim().toLowerCase();
+      const validAnswers = questions[current].answers.map(a => a.toLowerCase());
+      if (validAnswers.includes(input)) {
+        current++;
+        if (current < questions.length) {
+          showQuestion(current);
+        } else {
+          questionBox.classList.add('hidden');
+          giftBox.classList.remove('hidden');
         }
-      });
-
-      if (!allCorrect) {
-        alert('有些答案不太对哦，再试试看～');
-        return;
+      } else {
+        feedback.textContent = '答案不对哦～再想想！';
       }
+    }
 
-      form.style.display = 'none';
-      result.style.display = 'block';
-    });
+    showQuestion(current);
   </script>
 </body>
 </html>
