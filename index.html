@@ -1,42 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>嵌套窗口验证</title>
-    <script>
-        function askQuestion(question, correctAnswer) {
-            let answer;
-            while (true) {
-                answer = prompt(question);
-                if (answer === null) {
-                    alert("你取消了输入，无法继续访问！");
-                    return false;
-                }
-                if (answer.trim() === correctAnswer) {
-                    return true;
-                } else {
-                    alert("答案错误，请重试！");
-                }
-            }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>生日问答小测试 🎂</title>
+  <style>
+    body {
+      background-color: #e0f7ff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        window.onload = function () {
-            if (
-                askQuestion("请输入第一道问题的答案：", "答案1") &&
-                askQuestion("请输入第二道问题的答案：", "答案2") &&
-                askQuestion("请输入第三道问题的答案：", "答案3")
-            ) {
-                alert("验证成功！欢迎访问网站。");
-            } else {
-                document.body.innerHTML = "<h1>访问被拒绝</h1>";
-            }
-        };
-    </script>
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #1e90ff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      color: #007acc;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #b3e0ff;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c86ee;
+    }
+
+    .result {
+      text-align: center;
+      color: #007acc;
+    }
+
+    .gift-link {
+      color: #1e90ff;
+      font-size: 18px;
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <h1>欢迎来到我的网站</h1>
-    <p>如果你看到了这个页面，说明你通过了验证。</p>
+  <div class="container">
+    <h1>🎂 给我最爱的人的生日小测试 🎁</h1>
+    <form id="quizForm">
+      <div id="questions"></div>
+      <button type="submit">提交并查看礼物 🎉</button>
+    </form>
+    <div id="result" class="result" style="display: none;">
+      <h2>你太棒啦！🥳</h2>
+      <p>答完了全部问题，礼物就是 👉</p>
+      <a href="https://your-gift-link.com" class="gift-link" target="_blank">点我领取生日礼物 💝</a>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      '我们第一次约会是在哪一天？',
+      '我最喜欢你做的哪道菜？',
+      '你记得我们第一次旅行去了哪里吗？',
+      '我最怕的动物是什么？',
+      '你第一次送我的礼物是什么？',
+      '我最喜欢的一首歌是什么？',
+      '你最喜欢我哪一点？',
+      '我们最喜欢一起看的电影是？',
+      '我最常点的外卖是哪一家？',
+      '你第一次对我说“我爱你”是什么时候？'
+    ];
+
+    const questionsContainer = document.getElementById('questions');
+
+    questions.forEach((q, index) => {
+      const label = document.createElement('label');
+      label.textContent = `${index + 1}. ${q}`;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.required = true;
+      input.name = `q${index}`;
+      questionsContainer.appendChild(label);
+      questionsContainer.appendChild(input);
+    });
+
+    const form = document.getElementById('quizForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const inputs = form.querySelectorAll('input');
+      const allFilled = [...inputs].every(input => input.value.trim() !== '');
+      if (!allFilled) {
+        alert('请完成所有问题才能查看礼物信息哦～');
+        return;
+      }
+      form.style.display = 'none';
+      result.style.display = 'block';
+    });
+  </script>
 </body>
 </html>
-
