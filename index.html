@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生日闯关小游戏 🎂</title>
+  <title>了解度测试 🎂</title>
   <style>
     body {
       margin: 0;
-      background: linear-gradient(135deg, #a0e0ff, #e0f7ff);
+      background: radial-gradient(circle at top, #a0e0ff, #ffffff);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .card {
@@ -25,6 +26,7 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       text-align: center;
       animation: fadeIn 1s ease-in-out;
+      z-index: 2;
     }
 
     h1 {
@@ -78,21 +80,60 @@
       from { opacity: 0; transform: scale(0.9); }
       to { opacity: 1; transform: scale(1); }
     }
+
+    .particles {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particles span {
+      position: absolute;
+      display: block;
+      width: 10px; height: 10px;
+      background: rgba(30,144,255, 0.3);
+      animation: float 10s linear infinite;
+      border-radius: 50%;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    #letterBox {
+      text-align: left;
+      white-space: pre-wrap;
+      font-size: 18px;
+      color: #333;
+      margin-top: 20px;
+      padding: 20px;
+      background: #f3fbff;
+      border-radius: 10px;
+      border: 1px solid #cce7ff;
+    }
   </style>
 </head>
 <body>
+  <div class="particles" id="particles"></div>
   <div class="card" id="quiz">
-    <h1>🎉 答对每题才能继续 🎉</h1>
+    <h1>💙 了解我有多深？💙</h1>
     <div id="questionBox">
       <label id="questionText"></label>
       <input type="text" id="answerInput" placeholder="请输入答案..." />
-      <button onclick="submitAnswer()">提交</button>
+      <button onclick="submitAnswer()">下一题</button>
       <div class="result" id="feedback"></div>
     </div>
     <div id="giftBox" class="hidden">
-      <h2>🎁 全部答对啦！</h2>
-      <p>你的生日惊喜礼物链接 👉</p>
-      <a href="https://your-gift-link.com" target="_blank" style="font-size:18px; color:#1e90ff; text-decoration:underline;">点我领取 💝</a>
+      <h2 id="scoreResult"></h2>
+      <button id="showLetterBtn" class="hidden" onclick="showLetter()">点我领取生日信 💌</button>
+      <div id="letterBox" class="hidden"></div>
     </div>
   </div>
 
@@ -102,7 +143,7 @@
       { q: '我最喜欢的诗人是？', answers: ['苏轼'] },
       { q: '我最喜欢的女团是？', answers: ['fx'] },
       { q: '我最近几年最喜欢的一首歌是？', answers: ['最好的时光'] },
-      { q: '我最喜欢苏打绿哪一首歌？', answers: ['他举起右手点名'] },
+      { q: '苏打绿哪一首歌是关于希特勒？', answers: ['无与伦比的美丽'] },
       { q: '我最喜欢的内地城市是？', answers: ['苏州'] },
       { q: '我最期待你做的事情是？', answers: ['学习'] },
       { q: '我最讨厌的学科是？', answers: ['政治', '物理'] },
@@ -111,12 +152,26 @@
     ];
 
     let current = 0;
+    let correctCount = 0;
+
+    const particles = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+      const span = document.createElement('span');
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.top = Math.random() * 100 + 'vh';
+      span.style.width = span.style.height = Math.random() * 12 + 4 + 'px';
+      span.style.animationDuration = (5 + Math.random() * 10) + 's';
+      particles.appendChild(span);
+    }
 
     const questionText = document.getElementById('questionText');
     const answerInput = document.getElementById('answerInput');
     const feedback = document.getElementById('feedback');
     const giftBox = document.getElementById('giftBox');
     const questionBox = document.getElementById('questionBox');
+    const letterBox = document.getElementById('letterBox');
+    const scoreResult = document.getElementById('scoreResult');
+    const showLetterBtn = document.getElementById('showLetterBtn');
 
     function showQuestion(index) {
       questionText.textContent = `${index + 1}. ${questions[index].q}`;
@@ -128,20 +183,42 @@
       const input = answerInput.value.trim().toLowerCase();
       const validAnswers = questions[current].answers.map(a => a.toLowerCase());
       if (validAnswers.includes(input)) {
-        current++;
+        correctCount++;
+        feedback.textContent = '✅ 回答正确！';
+      } else {
+        feedback.textContent = '❌ 这个答案不太对，但我们继续吧～';
+      }
+      current++;
+      setTimeout(() => {
         if (current < questions.length) {
           showQuestion(current);
         } else {
-          questionBox.classList.add('hidden');
-          giftBox.classList.remove('hidden');
+          showScore();
         }
+      }, 1000);
+    }
+
+    function showScore() {
+      questionBox.classList.add('hidden');
+      giftBox.classList.remove('hidden');
+      const score = Math.round((correctCount / questions.length) * 100);
+      scoreResult.textContent = `你的了解度：${score}%`;
+      if (score >= 90) {
+        showLetterBtn.classList.remove('hidden');
       } else {
-        feedback.textContent = '答案不对哦～再想想！';
+        scoreResult.textContent += '\n还差一点点就能看到信啦，再试一次吧~ 💔';
       }
+    }
+
+    function showLetter() {
+      letterBox.classList.remove('hidden');
+      letterBox.textContent = `亲爱的宝贝：\n\n你真的好了解我呀，看到你的分数我真的很感动～\n这封信送给你，也送给我们的每一个时刻。\n谢谢你陪我经历每一个阶段，懂我、爱我、包容我。\n未来的每一年，我们都要一起过哦 ❤️\n\n我爱你，永远永远 💌`;
     }
 
     showQuestion(current);
   </script>
 </body>
 </html>
+
+
 
